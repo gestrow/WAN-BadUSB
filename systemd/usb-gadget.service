@@ -1,0 +1,13 @@
+[Unit]
+Description=USB Composite Gadget Setup
+Before=network-pre.target
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/usb-gadget
+ExecStart=/usr/bin/usb-gadget.sh ${PROFILE:-full}
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

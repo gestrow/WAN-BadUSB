@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment / secrets
+.env
+
+# Virtual environments
+venv/
+.venv/
+
+# Build artifacts
+hid-stream/*.o
+
+# Windows netcat binary — see tools/NC_EXE.md for download instructions
+tools/nc.exe
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Shared drive image (large binary, created at runtime on the Pi)
+*.img

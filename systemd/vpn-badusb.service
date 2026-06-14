@@ -1,0 +1,16 @@
+[Unit]
+Description=VPN BadUSB Bridge (Flask + Output Collector)
+After=network.target usb-gadget.service zerotier-one.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/vpn-badusb
+ExecStart=/usr/bin/python3 /opt/vpn-badusb/app.py
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

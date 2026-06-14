@@ -1,0 +1,53 @@
+#!/bin/bash
+# Switch USB gadget profile at runtime
+# Usage: sudo gadget-switch <hid-only|hid-storage|full>
+set -e
+
+PROFILES="hid-only hid-storage full"
+
+if [ -z "$1" ]; then
+    current=$(cat /var/lib/vpn-badusb/current-profile 2>/dev/null || echo "unknown")
+    echo "current profile: $current"
+    echo "available: $PROFILES"
+    echo "usage: sudo gadget-switch <profile>"
+    exit 0
+fi
+
+PROFILE="$1"
+
+# Validate
+valid=0
+for p in $PROFILES; do
+    [ "$p" = "$PROFILE" ] && valid=1
+done
+if [ "$valid" -ne 1 ]; then
+    echo "error: unknown profile '$PROFILE'"
+    echo "available: $PROFILES"
+    exit 1
+fi
+
+current=$(cat /var/lib/vpn-badusb/current-profile 2>/dev/null || echo "none")
+if [ "$current" = "$PROFILE" ]; then
+    echo "already on profile: $PROFILE"
+    exit 0
+fi
+
+echo "switching from '$current' to '$PROFILE'..."
+
+# Teardown current gadget
+/usr/bin/usb-gadget.sh teardown
+
+# Small delay for USB disconnect to register on host
+sleep 0.5
+
+# Build new gadget
+/usr/bin/usb-gadget.sh "$PROFILE"
+
+# Manage dnsmasq based on RNDIS presence
+if [ "$PROFILE" = "full" ]; then
+    systemctl start dnsmasq-usb.service 2>/dev/null || true
+else
+    systemctl stop dnsmasq-usb.service 2>/dev/null || true
+fi
+
+echo "switched to profile: $PROFILE"
