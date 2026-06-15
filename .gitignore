@@ -11,6 +11,7 @@ venv/
 .venv/
 
 # Build artifacts
+hid-stream/hid-stream
 hid-stream/*.o
 
 # Windows netcat binary — see tools/NC_EXE.md for download instructions
