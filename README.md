@@ -2,6 +2,8 @@
 
 Raspberry Pi Zero W as a USB composite gadget (keyboard + network + flash drive) controlled remotely via ZeroTier VPN. Allows an LLM or remote user to type keystrokes on any target host, capture command output, and exchange files — all over a single USB cable.
 
+![WAN-BadUSB](cyber-football.svg)
+
 ## Hardware Requirements
 
 | Component | Model / Spec | Purpose |
